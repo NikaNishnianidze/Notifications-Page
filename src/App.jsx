@@ -5,9 +5,35 @@ import "./App.css";
 
 function App() {
   const [notifications, setNotifications] = useState(data);
+  const [counter, setCounter] = useState(
+    notifications.filter((notification) => !notification.isRead).length
+  );
 
   function read(id) {
-    console.log(id);
+    const updateNotifications = notifications.map((notification) => {
+      if (notification.id == id) {
+        return { ...notification, isRead: true };
+      } else {
+        return notification;
+      }
+    });
+
+    setNotifications([...updateNotifications]);
+
+    const clickedNotification = notifications.find(
+      (notification) => notification.id == id
+    );
+    if (!clickedNotification.isRead) {
+      setCounter(counter - 1);
+    }
+  }
+
+  function markAllAsRead() {
+    const updateNotifications = notifications.map((notification) => {
+      return { ...notification, isRead: true };
+    });
+
+    setNotifications([...updateNotifications]);
   }
 
   return (
@@ -15,10 +41,10 @@ function App() {
       <div className="header">
         <div className="left">
           <h1>Notifications</h1>
-          <span>3</span>
+          <span>{counter}</span>
         </div>
         <div className="right">
-          <h2>Mark all as read</h2>
+          <h2 onClick={markAllAsRead}>Mark all as read</h2>
         </div>
       </div>
 
