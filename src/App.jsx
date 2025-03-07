@@ -4,6 +4,12 @@ import data from "./data.json";
 import "./App.css";
 
 function App() {
+  const [notifications, setNotifications] = useState(data);
+
+  function read(id) {
+    console.log(id);
+  }
+
   return (
     <>
       <div className="header">
@@ -16,7 +22,50 @@ function App() {
         </div>
       </div>
 
-      <div className="notifications">{data.map((notifications) => {})}</div>
+      <main>
+        {notifications.map((notifications) => {
+          return (
+            <div
+              className="notifications"
+              style={{
+                backgroundColor: !notifications.isRead ? "#F7FAFD" : "",
+              }}
+              onClick={() => read(notifications.id)}
+              key={notifications.id}
+            >
+              <img src={notifications.profilePic} className="image" />
+              <div className="info">
+                <span className="name">{notifications.username}</span>
+                {notifications.action ? (
+                  <span className="action">{notifications.action}</span>
+                ) : null}
+                {notifications.post ? (
+                  <span className="post">{notifications.post}</span>
+                ) : null}
+
+                {notifications.groupName ? (
+                  <span className="group">{notifications.groupName}</span>
+                ) : null}
+                {!notifications.isRead ? <div className="circle"></div> : null}
+
+                {notifications.time ? (
+                  <p className="time">{notifications.time}</p>
+                ) : null}
+
+                {notifications.text ? (
+                  <div className="text-div">
+                    <span className="text">{notifications.text}</span>
+                  </div>
+                ) : null}
+              </div>
+
+              {notifications.userPicture ? (
+                <img src={notifications.userPicture} className="userpic" />
+              ) : null}
+            </div>
+          );
+        })}
+      </main>
     </>
   );
 }
